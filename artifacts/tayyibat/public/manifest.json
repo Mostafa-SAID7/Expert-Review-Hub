@@ -1,0 +1,40 @@
+{
+  "name": "نظام الطيبات الغذائي",
+  "short_name": "الطيبات",
+  "description": "تتبع وجباتك اليومية وفق منهج الطيبات للدكتور ضياء العوضي",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fdf8f2",
+  "theme_color": "#e07a1a",
+  "lang": "ar",
+  "dir": "rtl",
+  "orientation": "portrait-primary",
+  "categories": ["health", "food", "lifestyle"],
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/opengraph.jpg",
+      "sizes": "1200x630",
+      "type": "image/jpeg"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "التتبع اليومي",
+      "url": "/tracker",
+      "description": "سجّل وجبات اليوم"
+    },
+    {
+      "name": "دليل الطيبات",
+      "url": "/guide",
+      "description": "استعرض الأطعمة الطيبة والخبيثة"
+    }
+  ]
+}
