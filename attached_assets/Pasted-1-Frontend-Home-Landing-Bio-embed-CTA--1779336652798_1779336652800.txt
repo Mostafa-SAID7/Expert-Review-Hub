@@ -1,0 +1,80 @@
+1. الصفحات الرئيسية (Frontend)
+
+Home/Landing: Bio الدكتور + شرح النظام + فيديوهات embed + CTA "ابدأ تتبعك".
+دليل الطيبات (Dynamic): قوائم مسموح/ممنوع (تصنيفات، صور، بحث، فلاتر). JSON data أو DB.
+خططي الغذائية: إنشاء/تعديل plans أسبوعية/يومية بناءً على أهداف (تخسيس، سكر، etc.).
+تتبع اليومي (Tracker): Log meals (صور + وصف + تصنيف طيب/خبيث + كمية + وقت). Progress bars للصيام، الماء، الجوع.
+Dashboard: Charts (وزن، طاقة، أعراض، adherence rate). Calendar view.
+مجتمع/Feed: Posts من مستخدمين (اختياري، moderation).
+مكتبة: وصفات، فيديوهات، PDF downloads.
+Profile: Goals، تاريخ، export data.
+Admin/Dashboard (إذا متعدد مستخدمين): إدارة محتوى، analytics.
+
+2. فيتشيرز متقدمة
+
+Auth: Login (Email + Google + Apple) مع roles (user/admin).
+Data Persistence: LocalStorage fallback + Server DB.
+Notifications: Email/SMS/Push لتذكير صيام، أكل، ماء (using Web Push or Firebase).
+AI Assistant (اختياري): اقتراح وجبات بناءً على logs (OpenAI/Claude API).
+Progress Analytics: Weight tracking، BMI، symptoms log، charts (Recharts or Tremor).
+SEO & Content: Blog/Articles عن النظام (static + dynamic).
+Monetization: Premium (unlimited plans، custom recipes، no ads).
+Multi-language: عربي/إنجليزي (next-intl).
+PWA: Installable app للموبايل.
+Security: Rate limiting، input sanitization، GDPR compliance (cookies consent).
+
+3. Tech Stack المقترح (Next.js Fullstack)
+
+Framework: Next.js 15+ (App Router) — Server Actions + React Server Components للـ performance.
+Styling: Tailwind CSS + shadcn/ui (ممتاز لـ components سريعة وaccessible).
+Backend: Next.js API Routes / Server Actions (أو tRPC لـ type-safety). Prisma + PostgreSQL (Supabase أو Neon للبساطة).
+Auth: NextAuth.js v5 (Auth.js) أو Clerk (أسهل مع social login).
+Database: Prisma ORM + PostgreSQL. Zod للـ validation.
+State Management: React hooks + Server Components (Zustand إذا لزم).
+Forms: React Hook Form + Zod.
+Charts: Recharts أو Tremor.sh أو Chart.js.
+Images: Next/Image + Cloudinary/Supabase Storage.
+PDF/Exports: react-pdf أو pdf-lib.
+
+مكتبات إضافية حديثة وموصى بها:
+
+SEO: Next.js built-in (Metadata API، sitemap، robots.txt) + next-seo أو @next/bundle-analyzer. Structured Data (JSON-LD لـ recipes).
+Performance: Next.js caching، React Suspense، Streaming. Plausible or Umami لـ analytics (privacy-friendly). Vercel Edge Functions.
+Logs & Monitoring: Sentry (errors) + Vercel Logs. Winston أو Pino لـ server logs.
+Cookies & Storage: Next.js cookies() API. js-cookie للـ client. Consent banner (cookieconsent أو custom).
+Others:
+Date: date-fns أو dayjs.
+Icons: lucide-react (مع shadcn).
+Deployment: Vercel (مثالي لـ Next.js).
+Testing: Playwright + Vitest.
+Internationalization: next-intl.
+Email: Resend أو Nodemailer.
+
+
+هيكل مجلدات أساسي:
+text/app
+  /dashboard, /tracker, /guide, /recipes...
+/components (shadcn)
+/lib (prisma, utils)
+/prisma
+/public (images)
+/actions (server actions)
+برومبت جاهز للـ AI Agent (انسخه واستخدمه مباشرة)
+textأنشئ موقع ويب كامل بـ Next.js 15 (App Router) لتتبع نظام الطيبات الغذائي للدكتور ضياء العوضي. استخدم Tailwind + shadcn/ui.
+
+**المتطلبات:**
+- Fullstack: Auth (NextAuth/Clerk)، Prisma + PostgreSQL.
+- Pages: Landing مع bio + disclaimer، دليل طيبات (مسموح/ممنوع dynamic)، Dashboard، Daily Tracker (log meals مع تصنيف + صور + calendar)، Progress charts، Recipes library، Profile.
+- Features: Meal logging، fasting tracker، water log، weight tracking، notifications (Web Push)، PWA، multi-lang (ar/en)، export data.
+- SEO: Metadata، sitemap، JSON-LD for recipes.
+- Performance: Server Components، caching، Image optimization.
+- Security: Zod validation، rate limit، cookies consent.
+- Design: Modern، clean، medical-friendly، dark mode، mobile-first.
+
+ابدأ بـ:
+1. npx create-next-app@latest
+2. Install shadcn، prisma، etc.
+3. أضف disclaimer قانوني في footer وكل صفحة.
+4. Seed DB بقوائم الطيبات الأساسية.
+
+أعطني الكود خطوة بخطوة أو repo structure كامل.

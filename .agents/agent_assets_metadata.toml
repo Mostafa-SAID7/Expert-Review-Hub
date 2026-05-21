@@ -1,0 +1,32 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "US6k2ktb87awPSKxdnKM0"
+uri = "file://artifacts/tayyibat/public/hero-food.png"
+type = "image"
+title = "Healthy wholesome food spread"
+
+[[generated]]
+id = "1puOKUvIW2sxe_zOjTp8b"
+uri = "file://artifacts/tayyibat/public/guide-header.png"
+type = "image"
+title = "Tayyibat guide header image"
+
+[[generated]]
+id = "D015CaJBPCOiak0tsHLad"
+uri = "file://artifacts/tayyibat/public/dr-dhia.png"
+type = "image"
+title = "Dr Dhia Al-Awadi portrait"
+
+[[generated]]
+id = "mMOa0KcvcEw68DE_S0y2o"
+uri = "file://artifacts/tayyibat/public/recipe-1.png"
+type = "image"
+title = "Healthy Mediterranean recipe"
+
+[[generated]]
+id = "_fPP70OWAiAMpIMQuvy4-"
+uri = "file://artifacts/tayyibat/public/recipe-2.png"
+type = "image"
+title = "Healthy breakfast bowl"
