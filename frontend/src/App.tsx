@@ -20,11 +20,15 @@ import Profile from "@/pages/Profile";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 1000 * 60 * 2,
-      gcTime: 1000 * 60 * 10,
+      staleTime: 1000 * 60 * 5,         // 5 minutes — data stays fresh
+      gcTime: 1000 * 60 * 30,           // 30 minutes — cache survives navigation
+      retry: 1,                          // one retry on error, not 3
+      refetchOnWindowFocus: false,       // stop skeleton flash when switching tabs
+      refetchOnReconnect: true,          // do refetch after network comes back
     },
   },
 });
+
 
 function Router() {
   return (

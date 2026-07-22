@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Clock, Users, Search, ChefHat, X, BookOpen, Leaf, Heart, Zap } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { RecipesSkeleton } from "@/components/ui/page-skeleton";
 
 const CATEGORY_LABELS: Record<string, string> = {
   breakfast: "الإفطار",
@@ -48,7 +49,7 @@ export default function Recipes() {
 
   return (
     <ProtectedRoute>
-      <div className="container px-4 max-w-6xl mx-auto py-8">
+      {isLoading ? <RecipesSkeleton /> : <div className="container px-4 max-w-6xl mx-auto py-8">
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-serif font-bold mb-1">وصفات الطيبات</h1>
@@ -256,7 +257,7 @@ export default function Recipes() {
             })}
           </div>
         )}
-      </div>
+      </div>}
     </ProtectedRoute>
   );
 }

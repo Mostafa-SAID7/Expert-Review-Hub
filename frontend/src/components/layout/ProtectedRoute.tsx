@@ -1,8 +1,8 @@
 import { useAuth } from "@/hooks/use-auth";
 import { useLocation } from "wouter";
-import { useEffect, ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 import { Layout } from "./Layout";
-import { Spinner } from "@/components/ui/spinner";
+import { PageSkeleton } from "@/components/ui/page-skeleton";
 
 export function ProtectedRoute({ children }: { children: ReactNode }) {
   const { user, isLoading } = useAuth();
@@ -14,17 +14,14 @@ export function ProtectedRoute({ children }: { children: ReactNode }) {
     }
   }, [user, isLoading, setLocation]);
 
+  // While auth is resolving, show a full structural skeleton instead of a
+  // blank spinner — users perceive the page as loading rather than broken.
   if (isLoading) {
-    return (
-      <Layout>
-        <div className="flex-1 flex items-center justify-center min-h-[60vh]">
-          <Spinner className="h-8 w-8 text-primary" />
-        </div>
-      </Layout>
-    );
+    return <PageSkeleton />;
   }
 
   if (!user) {
+    // Redirect is in flight — render nothing to avoid flash of protected content
     return null;
   }
 

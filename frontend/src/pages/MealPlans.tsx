@@ -19,6 +19,7 @@ import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
+import { MealPlansSkeleton } from "@/components/ui/page-skeleton";
 
 const DAYS_AR = ["الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
 const MEAL_TIMES_AR: Record<string, string> = {
@@ -141,7 +142,7 @@ export default function MealPlans() {
 
   return (
     <ProtectedRoute>
-      <div className="container px-4 max-w-6xl mx-auto py-8">
+      {isLoading ? <MealPlansSkeleton /> : <div className="container px-4 max-w-6xl mx-auto py-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
@@ -406,7 +407,7 @@ export default function MealPlans() {
             </AnimatePresence>
           </div>
         )}
-      </div>
+      </div>}
     </ProtectedRoute>
   );
 }

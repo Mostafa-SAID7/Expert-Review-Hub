@@ -315,3 +315,11 @@
     inset: -1px;
   }
 }
+
+/* ─── Skeleton shimmer animation ──────────────────────────────────────────── */
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
