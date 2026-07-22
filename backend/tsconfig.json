@@ -4,7 +4,7 @@
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "outDir": "dist",
-    "rootDir": "src",
+    "rootDir": ".",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
@@ -12,7 +12,7 @@
     "noImplicitAny": false,
     "types": ["node"]
   },
-  "include": ["src"],
+  "include": ["src", "api", "drizzle.config.ts"],
   "exclude": ["src/orval.config.ts"]
 }
 
