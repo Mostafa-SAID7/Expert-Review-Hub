@@ -34,17 +34,26 @@ self.addEventListener("fetch", (e) => {
     return;
   }
 
-  // Cache-first for static assets
+  // Cache-first for static assets & HTML navigation
   e.respondWith(
     caches.match(e.request).then((cached) => {
-      const network = fetch(e.request).then((res) => {
-        // Only cache valid responses
-        if (res && res.status === 200) {
-          const clone = res.clone();
-          caches.open(CACHE).then((c) => c.put(e.request, clone));
-        }
-        return res;
-      });
+      const network = fetch(e.request)
+        .then((res) => {
+          // Only cache valid 200 responses for same-origin http/https requests
+          if (res && res.status === 200 && res.type === "basic") {
+            const clone = res.clone();
+            caches.open(CACHE).then((c) => c.put(e.request, clone));
+          }
+          return res;
+        })
+        .catch((err) => {
+          // If network fetch fails and we have no cached asset, return cached root or fallback
+          if (cached) return cached;
+          if (e.request.mode === "navigate") {
+            return caches.match("/");
+          }
+          throw err;
+        });
       return cached || network;
     })
   );

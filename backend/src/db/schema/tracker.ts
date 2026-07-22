@@ -1,5 +1,5 @@
 import { pgTable, serial, integer, text, timestamp, date, pgEnum, real } from "drizzle-orm/pg-core";
-import { usersTable } from "./users.js";
+import { usersTable } from "./users";
 
 export const entryTypeEnum = pgEnum("entry_type", ["meal", "water", "fasting", "symptom"]);
 

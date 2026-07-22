@@ -1,5 +1,5 @@
 import { pgTable, serial, integer, text, timestamp, date, boolean, pgEnum } from "drizzle-orm/pg-core";
-import { usersTable } from "./users.js";
+import { usersTable } from "./users";
 
 export const goalEnum = pgEnum("goal", ["weight_loss", "diabetes", "energy", "general"]);
 export const mealTimeEnum = pgEnum("meal_time", ["breakfast", "lunch", "dinner", "snack"]);
