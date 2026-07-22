@@ -9,7 +9,7 @@
  * D - Dependency Inversion: Inject dependencies, don't create them
  */
 
-import { logger } from "../lib/logger";
+import { logger } from "../lib/logger.js";
 
 /**
  * Generic service interface

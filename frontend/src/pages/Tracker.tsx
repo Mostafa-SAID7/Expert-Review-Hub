@@ -6,7 +6,7 @@ import {
   useDeleteTrackerEntry,
   getGetTodaysSummaryQueryKey,
   getListTrackerEntriesQueryKey,
-} from "@workspace/api-client-react";
+} from "@/lib/api";
 import { format } from "date-fns";
 import { ar, enUS } from "date-fns/locale";
 import { useState } from "react";

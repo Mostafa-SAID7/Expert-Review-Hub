@@ -1,9 +1,8 @@
 import { Router } from "express";
-import { db } from "@workspace/db";
-import { trackerEntriesTable, weightLogsTable } from "@workspace/db";
+import { db, trackerEntriesTable, weightLogsTable } from "../db/index.js";
 import { eq, and, gte, lte, sql, desc } from "drizzle-orm";
-import { requireAuth, type AuthRequest } from "../middleware/auth";
-import { CreateTrackerEntryBody, UpdateTrackerEntryBody, CreateWeightLogBody } from "@workspace/api-zod";
+import { requireAuth, type AuthRequest } from "../middleware/auth.js";
+import { CreateTrackerEntrySchema as CreateTrackerEntryBody, UpdateTrackerEntrySchema as UpdateTrackerEntryBody, CreateWeightLogSchema as CreateWeightLogBody } from "../validators/schemas.js";
 
 const router = Router();
 
@@ -30,7 +29,8 @@ router.post("/tracker/entries", async (req: AuthRequest, res) => {
 });
 
 router.patch("/tracker/entries/:id", async (req: AuthRequest, res) => {
-  const id = parseInt(req.params.id);
+  const idStr = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+  const id = parseInt(idStr);
   if (isNaN(id)) return res.status(400).json({ error: "Invalid id" });
 
   const parsed = UpdateTrackerEntryBody.safeParse(req.body);
@@ -46,7 +46,8 @@ router.patch("/tracker/entries/:id", async (req: AuthRequest, res) => {
 });
 
 router.delete("/tracker/entries/:id", async (req: AuthRequest, res) => {
-  const id = parseInt(req.params.id);
+  const idStr = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+  const id = parseInt(idStr);
   if (isNaN(id)) return res.status(400).json({ error: "Invalid id" });
 
   await db.delete(trackerEntriesTable)

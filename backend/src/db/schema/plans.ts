@@ -1,7 +1,5 @@
 import { pgTable, serial, integer, text, timestamp, date, boolean, pgEnum } from "drizzle-orm/pg-core";
-import { createInsertSchema } from "drizzle-zod";
-import { z } from "zod/v4";
-import { usersTable } from "./users";
+import { usersTable } from "./users.js";
 
 export const goalEnum = pgEnum("goal", ["weight_loss", "diabetes", "energy", "general"]);
 export const mealTimeEnum = pgEnum("meal_time", ["breakfast", "lunch", "dinner", "snack"]);
@@ -29,7 +27,6 @@ export const mealPlanEntriesTable = pgTable("meal_plan_entries", {
   notes: text("notes"),
 });
 
-export const insertMealPlanSchema = createInsertSchema(mealPlansTable).omit({ id: true, createdAt: true });
-export type InsertMealPlan = z.infer<typeof insertMealPlanSchema>;
 export type MealPlan = typeof mealPlansTable.$inferSelect;
+export type InsertMealPlan = typeof mealPlansTable.$inferInsert;
 export type MealPlanEntry = typeof mealPlanEntriesTable.$inferSelect;

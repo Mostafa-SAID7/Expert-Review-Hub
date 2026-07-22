@@ -1,9 +1,8 @@
 import { Router } from "express";
-import { db } from "@workspace/db";
-import { userProfilesTable } from "@workspace/db";
+import { db, userProfilesTable } from "../db/index.js";
 import { eq } from "drizzle-orm";
-import { requireAuth, type AuthRequest } from "../middleware/auth";
-import { UpdateProfileBody } from "@workspace/api-zod";
+import { requireAuth, type AuthRequest } from "../middleware/auth.js";
+import { UpdateProfileSchema as UpdateProfileBody } from "../validators/schemas.js";
 
 const router = Router();
 router.use(requireAuth);

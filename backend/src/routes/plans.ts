@@ -1,9 +1,8 @@
 import { Router } from "express";
-import { db } from "@workspace/db";
-import { mealPlansTable, mealPlanEntriesTable } from "@workspace/db";
+import { db, mealPlansTable, mealPlanEntriesTable } from "../db/index.js";
 import { eq, and } from "drizzle-orm";
-import { requireAuth, type AuthRequest } from "../middleware/auth";
-import { CreateMealPlanBody, UpdateMealPlanBody } from "@workspace/api-zod";
+import { requireAuth, type AuthRequest } from "../middleware/auth.js";
+import { CreateMealPlanSchema as CreateMealPlanBody, UpdateProfileSchema as UpdateMealPlanBody } from "../validators/schemas.js";
 
 const router = Router();
 router.use(requireAuth);
@@ -34,7 +33,8 @@ router.post("/plans", async (req: AuthRequest, res) => {
 });
 
 router.get("/plans/:id", async (req: AuthRequest, res) => {
-  const id = parseInt(req.params.id);
+  const idStr = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+  const id = parseInt(idStr);
   if (isNaN(id)) return res.status(400).json({ error: "Invalid id" });
 
   const plan = await getPlanWithEntries(id, req.userId!);
@@ -43,7 +43,8 @@ router.get("/plans/:id", async (req: AuthRequest, res) => {
 });
 
 router.patch("/plans/:id", async (req: AuthRequest, res) => {
-  const id = parseInt(req.params.id);
+  const idStr = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+  const id = parseInt(idStr);
   if (isNaN(id)) return res.status(400).json({ error: "Invalid id" });
 
   const parsed = UpdateMealPlanBody.safeParse(req.body);
@@ -60,7 +61,8 @@ router.patch("/plans/:id", async (req: AuthRequest, res) => {
 });
 
 router.delete("/plans/:id", async (req: AuthRequest, res) => {
-  const id = parseInt(req.params.id);
+  const idStr = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+  const id = parseInt(idStr);
   if (isNaN(id)) return res.status(400).json({ error: "Invalid id" });
 
   await db.delete(mealPlanEntriesTable).where(eq(mealPlanEntriesTable.planId, id));

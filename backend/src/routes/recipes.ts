@@ -1,13 +1,12 @@
 import { Router } from "express";
-import { db } from "@workspace/db";
-import { recipesTable } from "@workspace/db";
-import { eq, ilike, and, sql } from "drizzle-orm";
+import { db, recipesTable } from "../db/index.js";
+import { eq, ilike, and, sql, type SQL } from "drizzle-orm";
 
 const router = Router();
 
 router.get("/recipes", async (req, res) => {
   const { category, goal, search } = req.query as Record<string, string>;
-  const conditions = [];
+  const conditions: SQL[] = [];
   if (category) conditions.push(eq(recipesTable.category, category));
   if (goal) conditions.push(eq(recipesTable.goal, goal));
   if (search) {

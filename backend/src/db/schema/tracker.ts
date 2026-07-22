@@ -1,7 +1,5 @@
 import { pgTable, serial, integer, text, timestamp, date, pgEnum, real } from "drizzle-orm/pg-core";
-import { createInsertSchema } from "drizzle-zod";
-import { z } from "zod/v4";
-import { usersTable } from "./users";
+import { usersTable } from "./users.js";
 
 export const entryTypeEnum = pgEnum("entry_type", ["meal", "water", "fasting", "symptom"]);
 
@@ -23,9 +21,8 @@ export const trackerEntriesTable = pgTable("tracker_entries", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
-export const insertTrackerEntrySchema = createInsertSchema(trackerEntriesTable).omit({ id: true, createdAt: true });
-export type InsertTrackerEntry = z.infer<typeof insertTrackerEntrySchema>;
 export type TrackerEntry = typeof trackerEntriesTable.$inferSelect;
+export type InsertTrackerEntry = typeof trackerEntriesTable.$inferInsert;
 
 export const weightLogsTable = pgTable("weight_logs", {
   id: serial("id").primaryKey(),
@@ -36,6 +33,5 @@ export const weightLogsTable = pgTable("weight_logs", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
-export const insertWeightLogSchema = createInsertSchema(weightLogsTable).omit({ id: true, createdAt: true });
-export type InsertWeightLog = z.infer<typeof insertWeightLogSchema>;
 export type WeightLog = typeof weightLogsTable.$inferSelect;
+export type InsertWeightLog = typeof weightLogsTable.$inferInsert;

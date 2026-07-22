@@ -1,5 +1,5 @@
 import { ProtectedRoute } from "@/components/layout/ProtectedRoute";
-import { useGetMe, useGetProfile, useUpdateProfile, UserProfileUpdateGoal } from "@workspace/api-client-react";
+import { useGetMe, useGetProfile, useUpdateProfile } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -27,7 +27,7 @@ export default function Profile() {
   const handleSave = () => {
     updateProfile.mutate({
       data: {
-        goal: goal as UserProfileUpdateGoal,
+        goal: goal as any,
         currentWeight: currentWeight ? Number(currentWeight) : undefined,
         targetWeight: targetWeight ? Number(targetWeight) : undefined,
       }

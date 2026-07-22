@@ -4,8 +4,8 @@
  */
 
 import type { Request, Response } from "express";
-import { successResponse } from "../utils";
-import type { HealthCheckResponse } from "../types";
+import { formatSuccess } from "../utils/index.js";
+import type { HealthCheckResponse } from "../types/index.js";
 
 export class HealthController {
   /**
@@ -18,6 +18,6 @@ export class HealthController {
       timestamp: new Date().toISOString(),
       uptime,
     };
-    res.json(successResponse("Health check passed", data));
+    res.json(formatSuccess("Health check passed", data));
   }
 }

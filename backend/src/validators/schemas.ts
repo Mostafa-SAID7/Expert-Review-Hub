@@ -39,7 +39,7 @@ export const TrackerTypeSchema = z.enum(["meal", "water", "fasting", "symptom"])
 
 export const CreateTrackerEntrySchema = z.object({
   type: TrackerTypeSchema,
-  date: z.coerce.date(),
+  date: z.string(),
   foodName: z.string().optional(),
   foodStatus: FoodStatusSchema.optional(),
   quantity: z.string().optional(),
@@ -47,6 +47,8 @@ export const CreateTrackerEntrySchema = z.object({
   hungerLevel: z.number().min(1).max(10).optional(),
   energyLevel: z.number().min(1).max(10).optional(),
 });
+
+export const UpdateTrackerEntrySchema = CreateTrackerEntrySchema.partial();
 
 // Meal Plan Schemas
 export const MealPlanGoalSchema = z.enum([
@@ -59,7 +61,7 @@ export const MealPlanGoalSchema = z.enum([
 export const CreateMealPlanSchema = z.object({
   title: z.string(),
   goal: MealPlanGoalSchema,
-  startDate: z.coerce.date(),
+  startDate: z.string(),
   notes: z.string().optional(),
 });
 
@@ -77,6 +79,6 @@ export const UpdateProfileSchema = z.object({
 // Weight Log Schemas
 export const CreateWeightLogSchema = z.object({
   weightKg: z.number().positive(),
-  date: z.coerce.date(),
+  date: z.string(),
   notes: z.string().optional(),
 });

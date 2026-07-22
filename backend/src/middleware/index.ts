@@ -3,5 +3,5 @@
  * Re-exports all middleware
  */
 
-export * from "./auth";
-export * from "./errorHandler";
+export * from "./auth.js";
+export * from "./errorHandler.js";

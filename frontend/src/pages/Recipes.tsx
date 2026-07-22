@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ProtectedRoute } from "@/components/layout/ProtectedRoute";
-import { useListRecipes } from "@workspace/api-client-react";
+import { useListRecipes } from "@/lib/api";
 import { motion, AnimatePresence } from "framer-motion";
 import { Clock, Users, Search, ChefHat, X, BookOpen, Leaf, Heart, Zap } from "lucide-react";
 import { Badge } from "@/components/ui/badge";

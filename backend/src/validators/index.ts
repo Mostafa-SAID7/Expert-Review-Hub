@@ -3,4 +3,4 @@
  * Re-exports validation schemas and utilities
  */
 
-export * from "./schemas";
+export * from "./schemas.js";

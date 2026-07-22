@@ -3,4 +3,4 @@
  * Re-exports all controllers
  */
 
-export * from "./health";
+export * from "./health.js";

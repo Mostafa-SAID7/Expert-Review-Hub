@@ -1,7 +1,6 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 import { useLocation } from "wouter";
-import { setAuthTokenGetter } from "@workspace/api-client-react/custom-fetch";
-import { useGetMe, User } from "@workspace/api-client-react";
+import { setAuthTokenGetter, useGetMe, User } from "@/lib/api";
 
 interface AuthContextType {
   user: User | null;
@@ -25,7 +24,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     query: {
       enabled: !!token,
       retry: false,
-    }
+    } as any
   });
 
   const [, setLocation] = useLocation();

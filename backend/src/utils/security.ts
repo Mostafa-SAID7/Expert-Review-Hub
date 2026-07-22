@@ -5,8 +5,8 @@
 
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import type { AuthPayload } from "../types";
-import { env } from "../config";
+import type { AuthPayload } from "../types/index.js";
+import { env } from "../config/index.js";
 
 /**
  * Hash password
@@ -30,8 +30,8 @@ export async function comparePassword(
  * Generate JWT token
  */
 export function generateToken(payload: AuthPayload): string {
-  return jwt.sign(payload, env.JWT_SECRET, {
-    expiresIn: env.JWT_EXPIRES_IN,
+  return jwt.sign(payload as object, env.JWT_SECRET, {
+    expiresIn: env.JWT_EXPIRES_IN as any,
   });
 }
 

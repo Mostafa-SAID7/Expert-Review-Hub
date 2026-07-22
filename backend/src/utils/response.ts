@@ -4,7 +4,7 @@
  * Dependency Inversion: Uses generic types, no hardcoded dependencies
  */
 
-import type { ApiResponse, PaginatedResponse } from "../types";
+import type { ApiResponse, PaginatedResponse } from "../types/index.js";
 
 /**
  * Format success response

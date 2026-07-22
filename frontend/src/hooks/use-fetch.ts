@@ -4,7 +4,7 @@
  */
 
 import { useState, useEffect, useCallback } from "react";
-import { ApiService, ApiError } from "@/services/api";
+import { customFetch, ApiError } from "@/lib/api/custom-fetch";
 
 interface UseFetchState<T> {
   data: T | null;
@@ -22,12 +22,10 @@ export function useFetch<T>(
     error: null,
   });
 
-  const apiService = new ApiService();
-
-  const fetch = useCallback(async () => {
+  const fetchData = useCallback(async () => {
     setState({ data: null, loading: true, error: null });
     try {
-      const data = await apiService.get<T>(url, options);
+      const data = await customFetch<T>(url, options);
       setState({ data, loading: false, error: null });
     } catch (error) {
       setState({
@@ -39,8 +37,8 @@ export function useFetch<T>(
   }, [url, options]);
 
   useEffect(() => {
-    fetch();
-  }, [fetch]);
+    fetchData();
+  }, [fetchData]);
 
-  return { ...state, refetch: fetch };
+  return { ...state, refetch: fetchData };
 }

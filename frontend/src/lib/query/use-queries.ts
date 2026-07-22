@@ -8,7 +8,6 @@
 
 import { useQuery, type UseQueryOptions } from "@tanstack/react-query";
 import type { HealthCheckResponse } from "@/types";
-import { apiClient } from "./api-client";
 
 /**
  * Health check query

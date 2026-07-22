@@ -1,8 +1,7 @@
 import { Router } from "express";
-import { db } from "@workspace/db";
-import { foodsTable } from "@workspace/db";
-import { eq, ilike, and, sql } from "drizzle-orm";
-import type { AuthRequest } from "../middleware/auth";
+import { db, foodsTable } from "../db/index.js";
+import { eq, ilike, and, sql, type SQL } from "drizzle-orm";
+import type { AuthRequest } from "../middleware/auth.js";
 
 const router = Router();
 
@@ -12,7 +11,7 @@ router.get("/foods", async (req: AuthRequest, res) => {
   const limitNum = Math.min(100, Math.max(1, parseInt(limit)));
   const offset = (pageNum - 1) * limitNum;
 
-  const conditions = [];
+  const conditions: SQL[] = [];
   if (category) conditions.push(eq(foodsTable.category, category));
   if (status === "tayyib" || status === "khabeeth") {
     conditions.push(eq(foodsTable.status, status));

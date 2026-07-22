@@ -1,6 +1,4 @@
 import { pgTable, serial, text, pgEnum, timestamp } from "drizzle-orm/pg-core";
-import { createInsertSchema } from "drizzle-zod";
-import { z } from "zod/v4";
 
 export const foodStatusEnum = pgEnum("food_status", ["tayyib", "khabeeth"]);
 
@@ -17,6 +15,5 @@ export const foodsTable = pgTable("foods", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
-export const insertFoodSchema = createInsertSchema(foodsTable).omit({ id: true, createdAt: true });
-export type InsertFood = z.infer<typeof insertFoodSchema>;
 export type Food = typeof foodsTable.$inferSelect;
+export type InsertFood = typeof foodsTable.$inferInsert;

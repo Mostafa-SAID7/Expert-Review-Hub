@@ -151,7 +151,7 @@ const AR = {
   today: "اليوم",
 } as const;
 
-const EN: typeof AR = {
+const EN: Record<keyof typeof AR, any> = {
   appName: "Tayyibat Food System",
   appShort: "Tayyibat",
   tagline: "Dr. Dhia Al-Awadi Method",

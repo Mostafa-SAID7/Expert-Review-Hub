@@ -5,16 +5,19 @@
  */
 
 import type { Request, Response, NextFunction } from "express";
-import { UnauthorizedError, ForbiddenError } from "../errors";
-import { extractToken, verifyToken } from "../utils/security";
-import type { AuthPayload } from "../types";
+import { UnauthorizedError, ForbiddenError } from "../errors/index.js";
+import { extractToken, verifyToken } from "../utils/security.js";
+import type { AuthPayload } from "../types/index.js";
 
 /**
  * Extended request with user context
  */
 export interface AuthRequest extends Request {
   user?: AuthPayload;
+  userId?: number;
 }
+
+export const requireAuth = verifyJWT;
 
 /**
  * Verify JWT token middleware
@@ -37,6 +40,7 @@ export function verifyJWT(
     }
 
     req.user = payload;
+    req.userId = (payload as any).userId ?? (payload as any).sub;
     next();
   } catch (error) {
     if (error instanceof UnauthorizedError) {

@@ -7,7 +7,7 @@ export const APP_NAME = "Expert Review Hub";
 export const APP_VERSION = "1.0.0";
 
 export const API_BASE_URL =
-  process.env.VITE_API_URL || "http://localhost:3000/api";
+  import.meta.env.VITE_API_URL || "http://localhost:3000/api";
 
 export const HTTP_STATUS = {
   OK: 200,

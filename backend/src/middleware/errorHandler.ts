@@ -4,8 +4,8 @@
  */
 
 import type { Request, Response, NextFunction } from "express";
-import { logger } from "../lib/logger";
-import { AppError } from "../errors";
+import { logger } from "../lib/logger.js";
+import { AppError } from "../errors/index.js";
 
 export function errorHandler(
   error: Error,

@@ -1,5 +1,5 @@
 import { Layout } from "@/components/layout/Layout";
-import { useListFoodCategories, useListFoods, type ListFoodsStatus } from "@workspace/api-client-react";
+import { useListFoodCategories, useListFoods, type ListFoodsStatus } from "@/lib/api";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Search, Leaf, ShieldAlert } from "lucide-react";

@@ -13,14 +13,14 @@ export const env = {
   
   // JWT
   JWT_SECRET: process.env.JWT_SECRET || "your-secret-key",
-  JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN || "7d",
+  JWT_EXPIRES_IN: (process.env.JWT_EXPIRES_IN || "7d") as string,
   
   // CORS
   CORS_ORIGIN: process.env.CORS_ORIGIN || "http://localhost:5173",
   
   // Logging
   LOG_LEVEL: process.env.LOG_LEVEL || "info",
-} as const;
+};
 
 // Validate required env vars
 const requiredEnvVars = ["JWT_SECRET"];

@@ -3,4 +3,4 @@
  * Re-exports all service classes
  */
 
-export * from "./base";
+export * from "./base.js";

@@ -1,5 +1,5 @@
 import { ProtectedRoute } from "@/components/layout/ProtectedRoute";
-import { useGetDashboardSummary, useGetProgressCharts } from "@workspace/api-client-react";
+import { useGetDashboardSummary, useGetProgressCharts } from "@/lib/api";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from "recharts";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useLang } from "@/contexts/lang-context";

@@ -1,10 +1,9 @@
 import { Router } from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { db } from "@workspace/db";
-import { usersTable, userProfilesTable } from "@workspace/db";
+import { db, usersTable, userProfilesTable } from "../db/index.js";
 import { eq } from "drizzle-orm";
-import { RegisterSchema, LoginSchema } from "@workspace/api-zod";
+import { RegisterSchema, LoginSchema } from "../validators/schemas.js";
 
 const router = Router();
 const JWT_SECRET = process.env.SESSION_SECRET ?? "tayyibat-secret-key";

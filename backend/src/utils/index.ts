@@ -3,6 +3,6 @@
  * Re-exports all utility modules
  */
 
-export * from "./response";
-export * from "./validation";
-export * from "./security";
+export * from "./response.js";
+export * from "./validation.js";
+export * from "./security.js";

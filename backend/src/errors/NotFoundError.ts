@@ -3,7 +3,7 @@
  * Single Responsibility: 404 Resource not found errors
  */
 
-import { AppError } from "./BaseError";
+import { AppError } from "./BaseError.js";
 
 export class NotFoundError extends AppError {
   constructor(resource: string = "Resource") {

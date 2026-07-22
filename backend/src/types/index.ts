@@ -7,9 +7,9 @@
  */
 
 // Core types - NOT from DB (only for API/Auth/Common)
-export type * from "./api";
-export type * from "./auth";
-export type * from "./common";
+export type * from "./api.js";
+export type * from "./auth.js";
+export type * from "./common.js";
 
 // For domain types, import directly from db/schema:
 // import type { User, Food, TrackerEntry, WeightLog } from "../db/schema"

@@ -3,7 +3,7 @@
  * Single Responsibility: 409 Resource conflict errors (duplicate, etc)
  */
 
-import { AppError } from "./BaseError";
+import { AppError } from "./BaseError.js";
 
 export class ConflictError extends AppError {
   constructor(message: string = "Conflict") {

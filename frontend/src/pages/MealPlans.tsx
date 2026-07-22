@@ -6,7 +6,7 @@ import {
   useUpdateMealPlan,
   useDeleteMealPlan,
   getListMealPlansQueryKey,
-} from "@workspace/api-client-react";
+} from "@/lib/api";
 import { useQueryClient } from "@tanstack/react-query";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Calendar, Target, Trash2, CheckCircle, ChevronRight, Utensils, Clock, X } from "lucide-react";
@@ -260,7 +260,7 @@ export default function MealPlans() {
                       </div>
                       <div className="flex items-center gap-1 mr-2" onClick={e => e.stopPropagation()}>
                         <button
-                          onClick={() => toggleActive(plan.id, plan.isActive)}
+                          onClick={() => toggleActive(plan.id, plan.isActive ?? false)}
                           className={`p-1.5 rounded-lg transition-colors ${plan.isActive ? "text-primary bg-primary/10" : "text-muted-foreground hover:text-primary"}`}
                           title={plan.isActive ? "إلغاء التفعيل" : "تفعيل"}
                         >
