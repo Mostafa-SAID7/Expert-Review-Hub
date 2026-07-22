@@ -4,6 +4,7 @@ import { pinoHttp } from "pino-http";
 import router from "./routes/index.js";
 import { logger } from "./lib/logger.js";
 import { env } from "./config/index.js";
+import { errorHandler } from "./middleware/errorHandler.js";
 
 const app: Express = express();
 
@@ -32,5 +33,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/api", router);
+
+// Must be registered AFTER routes — 4-arg signature tells Express it's an error handler
+app.use(errorHandler);
 
 export default app;
