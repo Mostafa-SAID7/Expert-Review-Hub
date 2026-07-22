@@ -6,34 +6,39 @@ import type { AuthRequest } from "../middleware/auth.js";
 const router = Router();
 
 router.get("/foods", async (req: AuthRequest, res) => {
-  const { category, status, search, page = "1", limit = "20" } = req.query as Record<string, string>;
-  const pageNum = Math.max(1, parseInt(page));
-  const limitNum = Math.min(100, Math.max(1, parseInt(limit)));
-  const offset = (pageNum - 1) * limitNum;
+  try {
+    const { category, status, search, page = "1", limit = "20" } = req.query as Record<string, string>;
+    const pageNum = Math.max(1, parseInt(page));
+    const limitNum = Math.min(100, Math.max(1, parseInt(limit)));
+    const offset = (pageNum - 1) * limitNum;
 
-  const conditions: SQL[] = [];
-  if (category) conditions.push(eq(foodsTable.category, category));
-  if (status === "tayyib" || status === "khabeeth") {
-    conditions.push(eq(foodsTable.status, status));
+    const conditions: SQL[] = [];
+    if (category) conditions.push(eq(foodsTable.category, category));
+    if (status === "tayyib" || status === "khabeeth") {
+      conditions.push(eq(foodsTable.status, status));
+    }
+    if (search) {
+      conditions.push(
+        sql`(${ilike(foodsTable.name, `%${search}%`)} OR ${ilike(foodsTable.nameAr, `%${search}%`)})`
+      );
+    }
+
+    const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
+    const [items, countResult] = await Promise.all([
+      db.select().from(foodsTable).where(whereClause).limit(limitNum).offset(offset),
+      db.select({ count: sql<number>`count(*)::int` }).from(foodsTable).where(whereClause),
+    ]);
+
+    return res.json({
+      items,
+      total: countResult[0]?.count ?? 0,
+      page: pageNum,
+      limit: limitNum,
+    });
+  } catch (err: any) {
+    console.error("GET /foods error:", err);
+    return res.status(500).json({ error: err.message });
   }
-  if (search) {
-    conditions.push(
-      sql`(${ilike(foodsTable.name, `%${search}%`)} OR ${ilike(foodsTable.nameAr, `%${search}%`)})`
-    );
-  }
-
-  const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
-  const [items, countResult] = await Promise.all([
-    db.select().from(foodsTable).where(whereClause).limit(limitNum).offset(offset),
-    db.select({ count: sql<number>`count(*)::int` }).from(foodsTable).where(whereClause),
-  ]);
-
-  return res.json({
-    items,
-    total: countResult[0]?.count ?? 0,
-    page: pageNum,
-    limit: limitNum,
-  });
 });
 
 router.get("/foods/categories", async (_req, res) => {
