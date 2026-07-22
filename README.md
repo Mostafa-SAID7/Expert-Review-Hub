@@ -2,102 +2,90 @@
 
 Single Backend + Single Frontend Application
 
+## � Quick Start (5 minutes)
+
+### 1️⃣ Prerequisites
+- Node.js v18+ ([Download](https://nodejs.org/))
+- PostgreSQL ([Download](https://www.postgresql.org/))
+
+### 2️⃣ Backend
+```bash
+cd backend
+npm install
+
+# Create .env file
+cat > .env << EOF
+DATABASE_URL=postgresql://user:password@localhost:5432/expert_review_hub
+JWT_SECRET=your-secret-key-here
+PORT=3000
+EOF
+
+npm run dev
+```
+✅ Backend: `http://localhost:3000`
+
+### 3️⃣ Frontend
+```bash
+cd frontend
+npm install
+
+# Create .env file
+cat > .env << EOF
+VITE_API_URL=http://localhost:3000
+EOF
+
+npm run dev
+```
+✅ Frontend: `http://localhost:5173`
+
+---
+
 ## 📁 Structure
 
 ```
 .
-├── .git/          ← Version control
 ├── backend/       ← Node.js + Express API
 ├── frontend/      ← React + Vite web app
-└── .gitignore
+└── README.md
 ```
 
-## 🚀 Quick Start
+## 📚 Full Setup Guide
 
-### Backend
-```bash
-cd backend
-npm install
-npm run dev       # Development mode
-npm run build     # Build for production
-npm run start     # Run production build
-```
-
-**Backend runs on:** `http://localhost:3000`
-
-### Frontend
-```bash
-cd frontend
-npm install
-npm run dev       # Development mode (Vite)
-npm run build     # Build for production
-npm run preview   # Preview production build
-```
-
-**Frontend runs on:** `http://localhost:5173`
+See **[SETUP_GUIDE.md](./SETUP_GUIDE.md)** for detailed instructions.
 
 ## 🛠️ Tech Stack
 
-### Backend
-- Node.js + Express
-- PostgreSQL + Drizzle ORM
-- TypeScript
-- Zod validation
+- **Backend**: Node.js, Express, PostgreSQL, Drizzle, TypeScript
+- **Frontend**: React 19, Vite, Tailwind, Radix UI, TypeScript
 
-### Frontend
-- React 19 + Vite
-- Tailwind CSS
-- Radix UI components
-- TypeScript
+## 📝 Backend Scripts
 
-## 📝 Environment
-
-### Backend (.env in backend/)
-```
-DATABASE_URL=postgresql://user:password@localhost/expert_review_hub
-SESSION_SECRET=your-secret-key
-PORT=3000
+```bash
+npm run dev       # Development (auto-restart)
+npm run build     # Build for production
+npm run start     # Run production build
+npm run typecheck # TypeScript check
 ```
 
-### Frontend (.env in frontend/)
-```
-VITE_API_URL=http://localhost:3000
+## 📝 Frontend Scripts
+
+```bash
+npm run dev       # Development
+npm run build     # Build for production
+npm run preview   # Preview production
+npm run typecheck # TypeScript check
 ```
 
-## ✅ Features
+## ✨ Features
 
-- ✅ Clean, simple structure (no monorepo complexity)
-- ✅ Each app is completely independent
-- ✅ Backend and frontend can be deployed separately
+- ✅ Clean, simple structure
+- ✅ Independent backend & frontend
 - ✅ Full TypeScript support
-- ✅ SOLID principles enforced in backend
-
-## 📚 Development
-
-Each folder is a complete standalone application with its own:
-- `package.json` - Dependencies and scripts
-- `tsconfig.json` - TypeScript configuration
-- `src/` - Source code
-- `dist/` - Build output
-
-## 🚢 Deployment
-
-### Deploy Backend
-```bash
-cd backend
-npm install
-npm run build
-npm run start
-```
-
-### Deploy Frontend
-```bash
-cd frontend
-npm install
-npm run build
-# Upload dist/ to web server
-```
+- ✅ SOLID principles enforced
+- ✅ Production ready
 
 ---
 
 **Ready to develop!** 🎉
+
+See [SETUP_GUIDE.md](./SETUP_GUIDE.md) for detailed setup and troubleshooting.
