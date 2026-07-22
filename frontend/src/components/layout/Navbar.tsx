@@ -90,7 +90,7 @@ export function Navbar() {
               {/* Lang toggle */}
               <button
                 onClick={toggleLang}
-                className="h-8 px-3 text-xs font-bold rounded-md border border-border text-muted-foreground hover:text-foreground hover:border-primary/40 transition-colors"
+                className="h-8 px-3 text-xs font-bold rounded-full border border-border text-muted-foreground hover:text-foreground hover:border-primary/40 transition-colors"
                 title={lang === "ar" ? "Switch to English" : "التبديل للعربية"}
               >
                 {t("switchLang")}
@@ -99,7 +99,7 @@ export function Navbar() {
               {/* Theme toggle */}
               <button
                 onClick={toggleTheme}
-                className="h-8 w-8 flex items-center justify-center rounded-md border border-border text-muted-foreground hover:text-foreground hover:border-primary/40 transition-colors"
+                className="h-8 w-8 flex items-center justify-center rounded-full border border-border text-muted-foreground hover:text-foreground hover:border-primary/40 transition-colors"
                 title={theme === "light" ? "Dark mode" : "Light mode"}
               >
                 {theme === "light" ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}

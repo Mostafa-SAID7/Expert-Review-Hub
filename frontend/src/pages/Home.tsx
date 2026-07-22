@@ -40,16 +40,16 @@ export default function Home() {
               {t("home_hero_sub")}
             </p>
             <div className="pt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Button size="lg" className="w-full sm:w-auto text-lg px-8 py-6 rounded-full" asChild>
+              <Button size="lg" className="w-full sm:w-auto text-base px-6 py-3 rounded-lg" asChild>
                 <Link href="/register">
                   {t("home_cta_start")}
-                  <ArrowIcon className="ms-2 h-5 w-5" />
+                  <ArrowIcon className="ms-2 h-4 w-4" />
                 </Link>
               </Button>
               <Button
                 variant="outline"
                 size="lg"
-                className="w-full sm:w-auto text-lg px-8 py-6 rounded-full bg-background/50 backdrop-blur-sm"
+                className="w-full sm:w-auto text-base px-6 py-3 rounded-lg bg-background/50 backdrop-blur-sm"
                 asChild
               >
                 <Link href="/guide">{t("home_cta_guide")}</Link>
@@ -163,7 +163,7 @@ export default function Home() {
         <div className="container px-4 max-w-3xl mx-auto space-y-8">
           <h2 className="text-3xl md:text-5xl font-serif font-bold">{t("home_cta_section")}</h2>
           <p className="text-primary-foreground/80 text-lg md:text-xl">{t("home_cta_section_sub")}</p>
-          <Button size="lg" variant="secondary" className="text-lg px-8 py-6 rounded-full mt-4" asChild>
+          <Button size="lg" variant="secondary" className="text-base px-6 py-3 rounded-lg mt-4" asChild>
             <Link href="/register">{t("home_start_free")}</Link>
           </Button>
         </div>

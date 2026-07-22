@@ -61,13 +61,13 @@ export default function Login() {
       <div className="absolute top-4 left-4 flex gap-2 z-20">
         <button
           onClick={toggleLang}
-          className="h-8 px-3 text-xs font-bold rounded-md border border-border bg-background/80 backdrop-blur text-muted-foreground hover:text-foreground transition-colors"
+          className="h-8 px-3 text-xs font-bold rounded-full border border-border bg-background/80 backdrop-blur text-muted-foreground hover:text-foreground transition-colors"
         >
           {t("switchLang")}
         </button>
         <button
           onClick={toggleTheme}
-          className="h-8 w-8 flex items-center justify-center rounded-md border border-border bg-background/80 backdrop-blur text-muted-foreground hover:text-foreground transition-colors"
+          className="h-8 w-8 flex items-center justify-center rounded-full border border-border bg-background/80 backdrop-blur text-muted-foreground hover:text-foreground transition-colors"
         >
           {theme === "light" ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
         </button>
