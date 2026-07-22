@@ -2,7 +2,7 @@ import { Router } from "express";
 import { db } from "@workspace/db";
 import { trackerEntriesTable, weightLogsTable } from "@workspace/db";
 import { eq, and, gte, lte, sql, desc } from "drizzle-orm";
-import { requireAuth, type AuthRequest } from "../middlewares/auth";
+import { requireAuth, type AuthRequest } from "../middleware/auth";
 import { CreateTrackerEntryBody, UpdateTrackerEntryBody, CreateWeightLogBody } from "@workspace/api-zod";
 
 const router = Router();

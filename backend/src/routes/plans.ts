@@ -2,7 +2,7 @@ import { Router } from "express";
 import { db } from "@workspace/db";
 import { mealPlansTable, mealPlanEntriesTable } from "@workspace/db";
 import { eq, and } from "drizzle-orm";
-import { requireAuth, type AuthRequest } from "../middlewares/auth";
+import { requireAuth, type AuthRequest } from "../middleware/auth";
 import { CreateMealPlanBody, UpdateMealPlanBody } from "@workspace/api-zod";
 
 const router = Router();

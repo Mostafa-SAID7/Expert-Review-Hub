@@ -20,6 +20,13 @@
     "skipLibCheck": true,
     "target": "es2022",
     "types": [],
-    "customConditions": ["workspace"]
+    "customConditions": ["workspace"],
+    "baseUrl": ".",
+    "paths": {
+      "@workspace/db": ["backend/src/db"],
+      "@workspace/db/*": ["backend/src/db/*"],
+      "@workspace/api-zod": ["backend/src/validators"],
+      "@workspace/api-zod/*": ["backend/src/validators/*"]
+    }
   }
 }

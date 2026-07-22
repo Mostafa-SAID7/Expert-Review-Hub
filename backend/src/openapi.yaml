@@ -1,0 +1,1078 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: Tayyibat Dietary System API — Dr. Dhia Al-Awadi
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: auth
+    description: Authentication and user management
+  - name: foods
+    description: Tayyibat food guide (allowed/forbidden foods)
+  - name: tracker
+    description: Daily meal and habit tracking
+  - name: plans
+    description: Weekly/daily meal plans
+  - name: recipes
+    description: Recipe library
+  - name: dashboard
+    description: Dashboard analytics and summaries
+  - name: profile
+    description: User profile and goals
+
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+
+  # ── AUTH ──────────────────────────────────────────────────────────────────
+  /auth/register:
+    post:
+      operationId: register
+      tags: [auth]
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "400":
+          description: Validation error
+
+  /auth/login:
+    post:
+      operationId: login
+      tags: [auth]
+      summary: Login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginInput"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "401":
+          description: Unauthorized
+
+  /auth/logout:
+    post:
+      operationId: logout
+      tags: [auth]
+      summary: Logout
+      responses:
+        "200":
+          description: OK
+
+  /auth/me:
+    get:
+      operationId: getMe
+      tags: [auth]
+      summary: Get current user
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "401":
+          description: Not authenticated
+
+  # ── FOODS ─────────────────────────────────────────────────────────────────
+  /foods:
+    get:
+      operationId: listFoods
+      tags: [foods]
+      summary: List all foods with optional filters
+      parameters:
+        - name: category
+          in: query
+          schema:
+            type: string
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [tayyib, khabeeth]
+        - name: search
+          in: query
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FoodListResponse"
+
+  /foods/categories:
+    get:
+      operationId: listFoodCategories
+      tags: [foods]
+      summary: List all food categories with counts
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/FoodCategory"
+
+  /foods/{id}:
+    get:
+      operationId: getFood
+      tags: [foods]
+      summary: Get a single food item
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Food"
+        "404":
+          description: Not found
+
+  # ── TRACKER ───────────────────────────────────────────────────────────────
+  /tracker/entries:
+    get:
+      operationId: listTrackerEntries
+      tags: [tracker]
+      summary: List tracker entries for a date range
+      parameters:
+        - name: startDate
+          in: query
+          schema:
+            type: string
+            format: date
+        - name: endDate
+          in: query
+          schema:
+            type: string
+            format: date
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TrackerEntry"
+
+    post:
+      operationId: createTrackerEntry
+      tags: [tracker]
+      summary: Log a meal or habit entry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TrackerEntryInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TrackerEntry"
+
+  /tracker/entries/{id}:
+    patch:
+      operationId: updateTrackerEntry
+      tags: [tracker]
+      summary: Update a tracker entry
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TrackerEntryUpdate"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TrackerEntry"
+
+    delete:
+      operationId: deleteTrackerEntry
+      tags: [tracker]
+      summary: Delete a tracker entry
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: No content
+
+  /tracker/today:
+    get:
+      operationId: getTodaysSummary
+      tags: [tracker]
+      summary: Get today's tracking summary (meals, fasting, water, hunger)
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TodaySummary"
+
+  /tracker/weight:
+    get:
+      operationId: listWeightLogs
+      tags: [tracker]
+      summary: List weight log entries
+      parameters:
+        - name: days
+          in: query
+          schema:
+            type: integer
+            default: 30
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/WeightLog"
+
+    post:
+      operationId: createWeightLog
+      tags: [tracker]
+      summary: Log a weight entry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WeightLogInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WeightLog"
+
+  # ── PLANS ─────────────────────────────────────────────────────────────────
+  /plans:
+    get:
+      operationId: listMealPlans
+      tags: [plans]
+      summary: List user's meal plans
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/MealPlan"
+
+    post:
+      operationId: createMealPlan
+      tags: [plans]
+      summary: Create a new meal plan
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MealPlanInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MealPlan"
+
+  /plans/{id}:
+    get:
+      operationId: getMealPlan
+      tags: [plans]
+      summary: Get a specific meal plan with its entries
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MealPlan"
+
+    patch:
+      operationId: updateMealPlan
+      tags: [plans]
+      summary: Update a meal plan
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MealPlanUpdate"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MealPlan"
+
+    delete:
+      operationId: deleteMealPlan
+      tags: [plans]
+      summary: Delete a meal plan
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: No content
+
+  # ── RECIPES ───────────────────────────────────────────────────────────────
+  /recipes:
+    get:
+      operationId: listRecipes
+      tags: [recipes]
+      summary: List recipes with filters
+      parameters:
+        - name: category
+          in: query
+          schema:
+            type: string
+        - name: goal
+          in: query
+          schema:
+            type: string
+        - name: search
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Recipe"
+
+  /recipes/{id}:
+    get:
+      operationId: getRecipe
+      tags: [recipes]
+      summary: Get a single recipe
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Recipe"
+        "404":
+          description: Not found
+
+  # ── DASHBOARD ─────────────────────────────────────────────────────────────
+  /dashboard/summary:
+    get:
+      operationId: getDashboardSummary
+      tags: [dashboard]
+      summary: Get dashboard overview (streaks, totals, adherence)
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardSummary"
+
+  /dashboard/progress:
+    get:
+      operationId: getProgressCharts
+      tags: [dashboard]
+      summary: Get chart data for weight, energy, and adherence over time
+      parameters:
+        - name: days
+          in: query
+          schema:
+            type: integer
+            default: 30
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProgressCharts"
+
+  /dashboard/calendar:
+    get:
+      operationId: getCalendarData
+      tags: [dashboard]
+      summary: Get calendar heatmap data for meal tracking adherence
+      parameters:
+        - name: year
+          in: query
+          schema:
+            type: integer
+        - name: month
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CalendarDay"
+
+  # ── PROFILE ───────────────────────────────────────────────────────────────
+  /profile:
+    get:
+      operationId: getProfile
+      tags: [profile]
+      summary: Get user profile and goals
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
+
+    patch:
+      operationId: updateProfile
+      tags: [profile]
+      summary: Update user profile and goals
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserProfileUpdate"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
+
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      required: [status]
+      properties:
+        status:
+          type: string
+
+    # ── AUTH ──────────────────────────────────────────────────────────────
+    RegisterInput:
+      type: object
+      required: [name, email, password]
+      properties:
+        name:
+          type: string
+          minLength: 2
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 8
+
+    LoginInput:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+
+    AuthResponse:
+      type: object
+      required: [user, token]
+      properties:
+        user:
+          $ref: "#/components/schemas/User"
+        token:
+          type: string
+
+    User:
+      type: object
+      required: [id, name, email, role, createdAt]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+        role:
+          type: string
+          enum: [user, admin]
+        avatarUrl:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+
+    # ── FOODS ─────────────────────────────────────────────────────────────
+    Food:
+      type: object
+      required: [id, name, nameAr, status, category]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        nameAr:
+          type: string
+        status:
+          type: string
+          enum: [tayyib, khabeeth]
+        category:
+          type: string
+        imageUrl:
+          type: ["string", "null"]
+        description:
+          type: ["string", "null"]
+        descriptionAr:
+          type: ["string", "null"]
+        notes:
+          type: ["string", "null"]
+
+    FoodListResponse:
+      type: object
+      required: [items, total, page, limit]
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/Food"
+        total:
+          type: integer
+        page:
+          type: integer
+        limit:
+          type: integer
+
+    FoodCategory:
+      type: object
+      required: [name, tayyibCount, khabeethCount]
+      properties:
+        name:
+          type: string
+        nameAr:
+          type: string
+        tayyibCount:
+          type: integer
+        khabeethCount:
+          type: integer
+
+    # ── TRACKER ───────────────────────────────────────────────────────────
+    TrackerEntry:
+      type: object
+      required: [id, userId, type, date, createdAt]
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        type:
+          type: string
+          enum: [meal, water, fasting, symptom]
+        date:
+          type: string
+          format: date
+        time:
+          type: ["string", "null"]
+        foodName:
+          type: ["string", "null"]
+        foodStatus:
+          type: ["string", "null"]
+        quantity:
+          type: ["string", "null"]
+        notes:
+          type: ["string", "null"]
+        imageUrl:
+          type: ["string", "null"]
+        waterMl:
+          type: ["integer", "null"]
+        fastingHours:
+          type: ["number", "null"]
+        hungerLevel:
+          type: ["integer", "null"]
+        energyLevel:
+          type: ["integer", "null"]
+        createdAt:
+          type: string
+          format: date-time
+
+    TrackerEntryInput:
+      type: object
+      required: [type, date]
+      properties:
+        type:
+          type: string
+          enum: [meal, water, fasting, symptom]
+        date:
+          type: string
+          format: date
+        time:
+          type: string
+        foodName:
+          type: string
+        foodStatus:
+          type: string
+          enum: [tayyib, khabeeth]
+        quantity:
+          type: string
+        notes:
+          type: string
+        imageUrl:
+          type: string
+        waterMl:
+          type: integer
+        fastingHours:
+          type: number
+        hungerLevel:
+          type: integer
+          minimum: 1
+          maximum: 10
+        energyLevel:
+          type: integer
+          minimum: 1
+          maximum: 10
+
+    TrackerEntryUpdate:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [meal, water, fasting, symptom]
+        date:
+          type: string
+          format: date
+        time:
+          type: string
+        foodName:
+          type: string
+        foodStatus:
+          type: string
+        quantity:
+          type: string
+        notes:
+          type: string
+        imageUrl:
+          type: string
+        waterMl:
+          type: integer
+        fastingHours:
+          type: number
+        hungerLevel:
+          type: integer
+        energyLevel:
+          type: integer
+
+    TodaySummary:
+      type: object
+      required: [date, mealCount, tayyibCount, khabeethCount, waterMl, fastingHours, averageHunger, averageEnergy, adherenceScore]
+      properties:
+        date:
+          type: string
+          format: date
+        mealCount:
+          type: integer
+        tayyibCount:
+          type: integer
+        khabeethCount:
+          type: integer
+        waterMl:
+          type: integer
+        fastingHours:
+          type: number
+        averageHunger:
+          type: number
+        averageEnergy:
+          type: number
+        adherenceScore:
+          type: number
+          description: Percentage 0-100
+
+    WeightLog:
+      type: object
+      required: [id, userId, weightKg, date, createdAt]
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        weightKg:
+          type: number
+        date:
+          type: string
+          format: date
+        notes:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+
+    WeightLogInput:
+      type: object
+      required: [weightKg, date]
+      properties:
+        weightKg:
+          type: number
+        date:
+          type: string
+          format: date
+        notes:
+          type: string
+
+    # ── PLANS ─────────────────────────────────────────────────────────────
+    MealPlan:
+      type: object
+      required: [id, userId, title, goal, startDate, createdAt]
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        title:
+          type: string
+        titleAr:
+          type: ["string", "null"]
+        goal:
+          type: string
+          enum: [weight_loss, diabetes, energy, general]
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: ["string", "null"]
+        isActive:
+          type: boolean
+        notes:
+          type: ["string", "null"]
+        entries:
+          type: array
+          items:
+            $ref: "#/components/schemas/MealPlanEntry"
+        createdAt:
+          type: string
+          format: date-time
+
+    MealPlanEntry:
+      type: object
+      required: [id, planId, dayOfWeek, mealTime, foodName]
+      properties:
+        id:
+          type: integer
+        planId:
+          type: integer
+        dayOfWeek:
+          type: integer
+          minimum: 0
+          maximum: 6
+        mealTime:
+          type: string
+          enum: [breakfast, lunch, dinner, snack]
+        foodName:
+          type: string
+        quantity:
+          type: ["string", "null"]
+        notes:
+          type: ["string", "null"]
+
+    MealPlanInput:
+      type: object
+      required: [title, goal, startDate]
+      properties:
+        title:
+          type: string
+        titleAr:
+          type: string
+        goal:
+          type: string
+          enum: [weight_loss, diabetes, energy, general]
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+        notes:
+          type: string
+
+    MealPlanUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+        titleAr:
+          type: string
+        goal:
+          type: string
+          enum: [weight_loss, diabetes, energy, general]
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+        isActive:
+          type: boolean
+        notes:
+          type: string
+
+    # ── RECIPES ───────────────────────────────────────────────────────────
+    Recipe:
+      type: object
+      required: [id, title, titleAr, category, goal, ingredients, instructions, createdAt]
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        titleAr:
+          type: string
+        category:
+          type: string
+        goal:
+          type: string
+        imageUrl:
+          type: ["string", "null"]
+        ingredients:
+          type: string
+        instructions:
+          type: string
+        prepTimeMinutes:
+          type: ["integer", "null"]
+        servings:
+          type: ["integer", "null"]
+        tags:
+          type: array
+          items:
+            type: string
+        createdAt:
+          type: string
+          format: date-time
+
+    # ── DASHBOARD ─────────────────────────────────────────────────────────
+    DashboardSummary:
+      type: object
+      required: [currentStreak, longestStreak, totalMealsLogged, tayyibAdherencePercent, weeklyWaterAvgMl, currentWeight, targetWeight, activePlanTitle]
+      properties:
+        currentStreak:
+          type: integer
+          description: Consecutive days with logged meals
+        longestStreak:
+          type: integer
+        totalMealsLogged:
+          type: integer
+        tayyibAdherencePercent:
+          type: number
+        weeklyWaterAvgMl:
+          type: number
+        currentWeight:
+          type: ["number", "null"]
+        targetWeight:
+          type: ["number", "null"]
+        activePlanTitle:
+          type: ["string", "null"]
+        recentEntries:
+          type: array
+          items:
+            $ref: "#/components/schemas/TrackerEntry"
+
+    ProgressCharts:
+      type: object
+      required: [weightData, energyData, adherenceData, waterData]
+      properties:
+        weightData:
+          type: array
+          items:
+            $ref: "#/components/schemas/ChartPoint"
+        energyData:
+          type: array
+          items:
+            $ref: "#/components/schemas/ChartPoint"
+        adherenceData:
+          type: array
+          items:
+            $ref: "#/components/schemas/ChartPoint"
+        waterData:
+          type: array
+          items:
+            $ref: "#/components/schemas/ChartPoint"
+
+    ChartPoint:
+      type: object
+      required: [date, value]
+      properties:
+        date:
+          type: string
+        value:
+          type: number
+
+    CalendarDay:
+      type: object
+      required: [date, mealCount, adherenceScore]
+      properties:
+        date:
+          type: string
+          format: date
+        mealCount:
+          type: integer
+        adherenceScore:
+          type: number
+
+    # ── PROFILE ───────────────────────────────────────────────────────────
+    UserProfile:
+      type: object
+      required: [id, userId, goal, language]
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        goal:
+          type: string
+          enum: [weight_loss, diabetes, energy, general]
+        targetWeight:
+          type: ["number", "null"]
+        currentWeight:
+          type: ["number", "null"]
+        heightCm:
+          type: ["number", "null"]
+        dateOfBirth:
+          type: ["string", "null"]
+        gender:
+          type: ["string", "null"]
+        language:
+          type: string
+          enum: [ar, en]
+          default: ar
+        notificationsEnabled:
+          type: boolean
+        fastingReminderTime:
+          type: ["string", "null"]
+        waterReminderIntervalHours:
+          type: ["integer", "null"]
+
+    UserProfileUpdate:
+      type: object
+      properties:
+        goal:
+          type: string
+          enum: [weight_loss, diabetes, energy, general]
+        targetWeight:
+          type: number
+        currentWeight:
+          type: number
+        heightCm:
+          type: number
+        dateOfBirth:
+          type: string
+        gender:
+          type: string
+        language:
+          type: string
+          enum: [ar, en]
+        notificationsEnabled:
+          type: boolean
+        fastingReminderTime:
+          type: string
+        waterReminderIntervalHours:
+          type: integer
